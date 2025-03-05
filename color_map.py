@@ -4,7 +4,7 @@
 # Value = corresponding class label
 
 color_map = {
-    (128, 64, 128): 1,    # Road
+    (128, 64, 128): 1,    # Lane
     (35,142,107): 2,      # Sidewalk
     (70, 70, 70): 3,      # Building
     (60,20,220): 4,       # Wall
