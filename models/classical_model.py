@@ -94,7 +94,7 @@ Im._GetClassicalOutput()
 
 
 from PIL import Image
-from iou import compute_iou
+from evaluation.iou import compute_iou
 true_mask = Image.open("true_000037_10.png").convert("RGB") 
 true_mask_array = np.array(true_mask)
 pred_mask_array = Im.output

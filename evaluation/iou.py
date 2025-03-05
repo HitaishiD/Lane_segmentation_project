@@ -1,6 +1,6 @@
 import numpy as np
 from PIL import Image
-from color_map import color_map
+from evaluation.color_map import color_map
 
 # class_rgb = np.array([128, 64, 128])
 

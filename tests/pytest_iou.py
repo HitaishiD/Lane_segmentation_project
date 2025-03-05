@@ -1,4 +1,4 @@
-from iou import compute_iou
+from evaluation.iou import compute_iou
 import pytest
 from PIL import Image
 import numpy as np

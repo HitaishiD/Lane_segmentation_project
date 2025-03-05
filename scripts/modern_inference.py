@@ -4,7 +4,7 @@ import torchvision.models.segmentation as models
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-from color_map import color_map
+from evaluation.color_map import color_map
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = models.deeplabv3_resnet101(weights=None, aux_loss=True)
@@ -19,8 +19,8 @@ image = Image.open(image_path).convert("RGB")
 mask = Image.open(mask_path).convert("RGB") 
 
 transform = transforms.Compose([
-    transforms.ToTensor(),  # Convert to tensor (scales pixel values to [0,1])
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize using ImageNet values
+    transforms.ToTensor(),  
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]) 
 ])
 
 image_tensor = transform(image)
