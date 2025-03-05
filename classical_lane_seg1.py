@@ -88,9 +88,17 @@ class ClassicalMethod:
     plt.imshow(self.output)   
     plt.show()
 
-ImPath = '000037_10.png'
+ImPath = 'train_000037_10.png'
 Im = ClassicalMethod(ImPath)
 Im._GetClassicalOutput()
+
+
+from PIL import Image
+from iou import compute_iou
+true_mask = Image.open("true_000037_10.png").convert("RGB") 
+true_mask_array = np.array(true_mask)
+pred_mask_array = Im.output
+print(compute_iou(pred_mask_array , true_mask_array))
 
 # Im._Convert2HLS()
 # Im._ApplyMask()
