@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import os
+import matplotlib.pyplot as plt
 
 from data.data_loader import KITTIdataset
 from torch.utils.data import DataLoader, random_split
@@ -11,6 +12,12 @@ import utils.config as config
 
 def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, epochs):
     best_val_loss = float("inf")
+
+    train_losses = []
+    val_losses = []
+
+    plt.ion()
+    fig, ax = plt.subplots()
 
     for epoch in range(epochs):
         print(f"\n Epoch {epoch + 1}/{epochs}")
@@ -30,12 +37,13 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
             running_train_loss += loss.item()
 
         avg_train_loss = running_train_loss / len(train_loader)
+        train_losses.append(avg_train_loss)
         print(f"Train Loss: {avg_train_loss:.4f}")
 
         # Validation Phase
         model.eval()
         running_val_loss = 0.0
-        val_losses = []
+        val_losses_per_epoch = []
 
         with torch.no_grad():
             for images, masks in val_loader:
@@ -45,11 +53,20 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
                 loss = criterion(preds, masks)
                 running_val_loss += loss.item()
 
-                val_losses.append(criterion(preds, masks))  
+                val_losses_per_epoch.append(criterion(preds, masks))  
 
         avg_val_loss = running_val_loss / len(val_loader)
         avg_dice = sum(val_losses) / len(val_losses)
         print(f"Val Loss: {avg_val_loss:.4f} | Dice Score: {avg_dice:.4f}")
+
+        ax.clear()
+        ax.plot(train_losses, label="Train Loss")
+        ax.plot(val_losses, label="Val Loss")
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel("Loss")
+        ax.legend()
+        plt.draw()
+        plt.pause(0.1)
 
         # Learning rate scheduling
         scheduler.step()
@@ -61,6 +78,8 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
             print("Model checkpoint saved!")
 
     print("Training Completed!")
+    plt.ioff()
+    plt.show()
 
 
 # -----------------------------------------------------------------------------------------------------
