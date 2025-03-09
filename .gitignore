@@ -1,0 +1,7 @@
+converted_mask.png
+converted_scaled_mask.png
+data_semantics.zip
+preprocessed_masks/
+testing/
+training/
+__pycache__
