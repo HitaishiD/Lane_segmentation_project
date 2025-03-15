@@ -8,3 +8,4 @@ __pycache__
 testing_preprocessed_masks/
 preprocessed_mask/
 experiments/
+modelweights
