@@ -1,5 +1,8 @@
 ### To reproduce the same environment
 
-1. Create a conda environment using conda create env...
-2. There's already a conda environment installed. its saved as environment.yml
-3. conda env create -f environment.yml
+1. Run the on-start.sh script (stored on your local computer)
+2. Add the public key in ~/.ssh/id_rsa.pub in github
+3. Clone the github repo
+4. Setup the conda environment
+    conda env create -f environment.yml
+
