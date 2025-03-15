@@ -19,6 +19,11 @@ from dataset import KITTIdataset
 from model import DeepLabV3Plus
 
 
+### training params
+
+import argparse
+
+
 
 def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, epochs, NUM_CLASSES, CHECKPOINT_DIR, EXPERIMENT_NAME):
     train_losses = []
@@ -121,6 +126,18 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
     plt.show()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Training parameters for model")
+
+    # Adding the arguments
+    parser.add_argument('--batch_size', type=int, default=2, help='Batch size for training')
+    parser.add_argument('--learning_rate', type=float, default=1e-3, help='Learning rate for training')
+    parser.add_argument('--epochs', type=int, default=4, help='Number of epochs to train the model')
+    # Parse arguments
+    args = parser.parse_args()
+
+    return args
+
 
 def main():
     '''
@@ -136,11 +153,17 @@ def main():
     ##########################################
     ###       PARAMETERS 
     ##########################################
+    # Get parsed arguments
+    args = parse_args()
 
-    BATCH_SIZE = 2
-    LEARNING_RATE = 1e-3
+    # Now you can use the parsed arguments in your code
+    BATCH_SIZE = args.batch_size
+    LEARNING_RATE = args.learning_rate
+    epochs = args.epochs
+
+
+    ### Params that won't change
     NUM_CLASSES = 13
-    epochs = 4
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
