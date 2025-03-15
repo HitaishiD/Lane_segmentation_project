@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 from torch.utils.data import Dataset, DataLoader, random_split
 from tqdm import tqdm
+import torch
 
 
 class KITTIdataset(Dataset):
