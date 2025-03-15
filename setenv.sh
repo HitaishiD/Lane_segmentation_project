@@ -4,7 +4,8 @@ conda env create -f env.yml
 
 sleep 5
 
-conda activate cv
+conda init 
+
 
 
 sleep 5
