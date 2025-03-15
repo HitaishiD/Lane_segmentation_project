@@ -5,3 +5,4 @@ preprocessed_masks/
 testing/
 training/
 __pycache__
+testing_preprocessed_masks/
