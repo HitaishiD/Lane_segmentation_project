@@ -11,4 +11,4 @@ conda init
 sleep 5
 ## Download dataset
 
-sudo ./datasetdownload.sh
+./datasetdownload.sh
