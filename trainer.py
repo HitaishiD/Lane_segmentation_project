@@ -133,6 +133,17 @@ def main():
     7. Epochs 
     '''
 
+    ##########################################
+    ###       PARAMETERS 
+    ##########################################
+
+    BATCH_SIZE = 2
+    LEARNING_RATE = 1e-3
+    NUM_CLASSES = 13
+    epochs = 4
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+
     # Dataset and Transforms setup
     image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
     mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_mask'
@@ -140,7 +151,8 @@ def main():
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((256, 256)),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+                            std=[0.229, 0.224, 0.225])
     ])
 
     mask_transform = transforms.Compose([
@@ -153,11 +165,8 @@ def main():
                            transform=transform, mask_transform=mask_transform)
 
     num_img = len(dataset)
-    BATCH_SIZE = 2
     CHECKPOINT_DIR = "experiments"
     EXPERIMENT_NAME = 'modelweights'
-    LEARNING_RATE = 1e-3
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
     train_size = int(0.6 * num_img)
     val_size = int(0.2 * num_img)
@@ -170,17 +179,17 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
     # Model setup
-    NUM_CLASSES = 13
     model = DeepLabV3Plus(NUM_CLASSES)
     model = model.to(DEVICE)
 
     # Loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), LEARNING_RATE)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 
+                                                step_size=10, 
+                                                gamma=0.1)
 
     # Train the model
-    epochs = 4
     train(model, 
           train_loader, 
           val_loader,
