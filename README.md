@@ -1,11 +1,20 @@
-### To reproduce the same environment
+### To do immediately after starting the machine
+Run the on-start.sh script (stored on your local computer)
+
+1. `touch on-start.sh`
+2. `vim on-start.sh`
+3. copy the contents of on-start.sh
+4. `./on-start.sh`
+
+
+### To reproduce the same conda environment
 
 1. Run the on-start.sh script (stored on your local computer)
 2. Add the public key in ~/.ssh/id_rsa.pub in github
 3. Clone the github repo
 4. Setup the conda environment + download the dataset
 
-launch ./setenv.sh
+launch `./setenv.sh`
 
 
 
