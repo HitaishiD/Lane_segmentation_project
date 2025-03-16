@@ -2,9 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-
-csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs2_lr0.001_epochs10/training_losses.csv"
 # Path to your CSV file
+csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs13/training_losses.csv"
+# Save the plot as an image
+output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs13/loss_plot.png"
+plt.savefig(output_file)
+
 #csv_file = 'path_to_your_csv_file/training_losses.csv'
 
 # Read the CSV file into a pandas DataFrame
@@ -31,9 +34,7 @@ plt.legend()
 
 
 
-# Save the plot as an image
-output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs2_lr0.001_epochs10/loss_plot.png"
-plt.savefig(output_file)
+
 
 # Optionally, print the path where the plot is saved
 print(f"Plot saved as {output_file}")
