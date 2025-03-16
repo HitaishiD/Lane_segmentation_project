@@ -7,3 +7,10 @@
 
 launch ./setenv.sh
 
+
+
+### Things to change but use this for the moment
+
+1. activate the conda env 
+2. run `python test_processor.py`
+3. `mv testing_preprocessed_masks/ preprocessed_mask`
