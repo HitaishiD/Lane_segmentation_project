@@ -12,6 +12,8 @@ from tqdm import tqdm
 import logging
 import time
 import pandas as pd
+import argparse
+
 
 # Import your custom classes and models
 from dataset import ToTensorWithoutNormalization
@@ -19,13 +21,8 @@ from dataset import KITTIdataset
 from model import DeepLabV3Plus
 
 
-### training params
 
-import argparse
-
-
-
-def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, epochs, NUM_CLASSES, CHECKPOINT_DIR, EXPERIMENT_NAME):
+def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, epochs, NUM_CLASSES, experiment_folder, EXPERIMENT_NAME):
     train_losses = []
     val_losses = []
 
@@ -44,14 +41,10 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         model.train()
         running_train_loss = 0.0
         for images, masks in train_loader:
-            # Move images and masks to the device (GPU or CPU)
             images, masks = images.to(device), masks.squeeze(1).long().to(device)
 
-            # Ensure mask values are within the valid range for CrossEntropyLoss
             masks = torch.clamp(masks, 0, NUM_CLASSES - 1)
 
-            # Check for invalid mask values and log
-            #print(f"Min mask value: {masks.min()}, Max mask value: {masks.max()}")
             if (masks < 0).any() or (masks >= NUM_CLASSES).any():
                 print(f"Invalid mask values found: {masks}")
 
@@ -76,7 +69,6 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
             for images, masks in val_loader:
                 images, masks = images.to(device), masks.squeeze(1).long().to(device)
 
-                # Ensure mask values are within the valid range for CrossEntropyLoss
                 masks = torch.clamp(masks, 0, NUM_CLASSES - 1)
 
                 preds = model(images)
@@ -89,7 +81,6 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         print(f"Val Loss: {avg_val_loss:.4f}")
         logging.info(f"Val Loss: {avg_val_loss:.4f}")
 
-        # Update tqdm progress bar
         epoch_progress.set_postfix({"Train Loss": f"{avg_train_loss:.4f}", "Val Loss": f"{avg_val_loss:.4f}"})
 
         # Update plot
@@ -105,11 +96,16 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         # Learning rate scheduling
         scheduler.step()
 
-    # Save model at the end of training
-    checkpoint_path = os.path.join(CHECKPOINT_DIR, EXPERIMENT_NAME)
-    torch.save(model.state_dict(), checkpoint_path)
+        # Save model checkpoint after each epoch
+        checkpoint_path = os.path.join(experiment_folder, f"epoch_{epoch+1}.pth")  # Fixed path here
+        torch.save(model.state_dict(), checkpoint_path)
+        print(f"Checkpoint saved for epoch {epoch+1}!")
+
+    # Final model checkpoint
+    final_checkpoint_path = os.path.join(experiment_folder, "final_model.pth")  # Save the final model
+    torch.save(model.state_dict(), final_checkpoint_path)
     print("Final model checkpoint saved!")
-    logging.info(f"Final model checkpoint saved at {checkpoint_path}")
+    logging.info(f"Final model checkpoint saved at {final_checkpoint_path}")
 
     # Save the losses to a CSV file
     loss_df = pd.DataFrame({
@@ -118,12 +114,13 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         'Validation Loss': val_losses
     })
 
-    loss_df.to_csv(EXPERIMENT_NAME, index=False)
+    loss_df.to_csv(os.path.join(experiment_folder, "training_losses.csv"), index=False)
 
     print("Training Completed!")
     logging.info("Training Completed!")
     plt.ioff()
     plt.show()
+
 
 
 def parse_args():
@@ -137,6 +134,8 @@ def parse_args():
     args = parser.parse_args()
 
     return args
+
+
 
 
 def main():
@@ -161,7 +160,9 @@ def main():
     LEARNING_RATE = args.learning_rate
     epochs = args.epochs
     CHECKPOINT_DIR = "experiments"
-    EXPERIMENT_NAME = 'modelweights'
+    
+    # Create experiment name based on hyperparameters
+    EXPERIMENT_NAME = f"bs{BATCH_SIZE}_lr{LEARNING_RATE}_epochs{epochs}"
 
     ### Params that won't change
     NUM_CLASSES = 13
@@ -212,6 +213,11 @@ def main():
                                                 step_size=10, 
                                                 gamma=0.1)
 
+    # Create the experiment folder if it doesn't exist
+    experiment_folder = os.path.join(CHECKPOINT_DIR, EXPERIMENT_NAME)
+    if not os.path.exists(experiment_folder):
+        os.makedirs(experiment_folder)
+
     # Train the model
     train(model, 
           train_loader, 
@@ -222,8 +228,9 @@ def main():
           DEVICE,
           epochs,
           NUM_CLASSES,
-          CHECKPOINT_DIR,
+          experiment_folder,   # Pass the experiment folder here
           EXPERIMENT_NAME)
+
 
 
 if __name__ == "__main__":
