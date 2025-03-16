@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 
 
 # Path to your CSV file
-csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs13/training_losses.csv"
+csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs16/training_losses.csv"
 # Save the plot as an image
-output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs13/loss_plot.png"
-plt.savefig(output_file)
+output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs16/loss_plot.png"
 
 #csv_file = 'path_to_your_csv_file/training_losses.csv'
 
@@ -32,6 +31,8 @@ plt.ylabel('Loss')
 plt.title('Training and Validation Loss Over Epochs')
 plt.legend()
 
+
+plt.savefig(output_file)
 
 
 
