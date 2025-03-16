@@ -37,3 +37,10 @@ For the moment the training loss file needs to be hard coded. but this can be ch
 
 `python plotter.py`
 
+
+
+### Experiment launcher
+This is to launch several experiments in one script only
+
+`./experimentlauncher.sh`
+
