@@ -29,3 +29,11 @@ launch `./setenv.sh`
 
 The training loop can be run with different hyperparameters as shown
 `python trainer.py --batch_size 5 --epochs 13`
+
+
+### Plotting the results
+For the moment the training loss file needs to be hard coded. but this can be changed later. A temporary solution run 
+
+
+`python plotter.py`
+
