@@ -18,6 +18,10 @@ sleep 5
 
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
 
+sleep 5
+echo "copy and paste the following public key on github"
+
+cat ~/.ssh/id_rsa.pub
 
 
 
