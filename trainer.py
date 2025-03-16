@@ -160,7 +160,8 @@ def main():
     BATCH_SIZE = args.batch_size
     LEARNING_RATE = args.learning_rate
     epochs = args.epochs
-
+    CHECKPOINT_DIR = "experiments"
+    EXPERIMENT_NAME = 'modelweights'
 
     ### Params that won't change
     NUM_CLASSES = 13
@@ -188,8 +189,7 @@ def main():
                            transform=transform, mask_transform=mask_transform)
 
     num_img = len(dataset)
-    CHECKPOINT_DIR = "experiments"
-    EXPERIMENT_NAME = 'modelweights'
+   
 
     train_size = int(0.6 * num_img)
     val_size = int(0.2 * num_img)
