@@ -23,3 +23,9 @@ launch `./setenv.sh`
 1. activate the conda env 
 2. run `python test_processor.py`
 3. `mv testing_preprocessed_masks/ preprocessed_mask`
+
+
+### Running the training loop
+
+The training loop can be run with different hyperparameters as shown
+`python trainer.py --batch_size 5 --epochs 13`
