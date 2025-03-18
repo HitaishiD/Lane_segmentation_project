@@ -69,7 +69,7 @@ class ClassicalMethod:
     return self.lines
 
   def LaneBoundaries(self):
-    if not self.lines:
+    if self.lines == []:
        self.left_lane = None
        self.right_lane = None
        return self.left_lane, self.right_lane
