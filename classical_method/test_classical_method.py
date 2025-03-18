@@ -1,9 +1,11 @@
 from classical_method import ClassicalMethod
 import matplotlib.pyplot as plt
 
-image_path = r"C:\Users\dhoow\Desktop\Computer Vision\lane_segmentation_project\train_000037_10.png"
+image_path = r"E:\data_semantics\training\image_2\000104_10.png"
 classical_method = ClassicalMethod(image_path)
 output = classical_method.process()
 
-plt.imshow(output)
-plt.show()
+print(classical_method.lines)
+# plt.imshow(output)
+# plt.axis('off')
+# plt.show()
