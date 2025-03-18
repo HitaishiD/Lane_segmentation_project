@@ -13,45 +13,33 @@ class ClassicalMethod:
     self.gpu_image = cv2.cuda_GpuMat()  # Create a GpuMat for CUDA processing
     self.gpu_image.upload(self.image)   # Upload the image to the GPU
 
-    self.steps = [
-            self.Convert2HLS,
-            self.ApplyMask,
-            self.Convert2Grayscale,
-            self.GaussianBlur,
-            self.DetectEdges,
-            self.RegionOfInterest,
-            self.HoughLines,
-            self.LaneBoundaries,
-            self.FillPolygon
-        ]
-
   def Convert2HLS(self):
-    self.hls = cv2.cvtColor(self.image, cv2.COLOR_RGB2HLS)
+    self.hls = cv2.cuda.cvtColor(self.gpu_image, cv2.COLOR_RGB2HLS)
     return self.hls
 
   def ApplyMask(self):
     yellow_lower = np.array([15, 30, 115], dtype="uint8")  
     yellow_upper = np.array([35, 204, 255], dtype="uint8")  
-    yellow_mask = cv2.inRange(self.hls, yellow_lower, yellow_upper)
+    yellow_mask = cv2.cuda.inRange(self.hls, yellow_lower, yellow_upper)
 
     white_lower = np.array([0, 200, 0], dtype="uint8")  
     white_upper = np.array([255, 255, 255], dtype="uint8")  
-    white_mask = cv2.inRange(self.hls, white_lower, white_upper)
+    white_mask = cv2.cuda.inRange(self.hls, white_lower, white_upper)
 
-    lane_mask = cv2.bitwise_or(yellow_mask, white_mask)
-    self.masked_image = cv2.bitwise_and(self.image, self.image, mask=lane_mask)
+    lane_mask = cv2.cuda.bitwise_or(yellow_mask, white_mask)
+    self.masked_image = cv2.cuda.bitwise_and(self.image, self.image, mask=lane_mask)
     return self.masked_image
 
   def Convert2Grayscale(self):
-    self.grayscale = cv2.cvtColor(self.masked_image, cv2.COLOR_RGB2GRAY)
+    self.grayscale = cv2.cuda.cvtColor(self.masked_image, cv2.COLOR_RGB2GRAY)
     return self.grayscale
 
   def GaussianBlur(self,filter_size=(5,5), sigma=0):
-    self.blur = cv2.GaussianBlur(self.grayscale, filter_size, sigma)
+    self.blur = cv2.cuda.createGaussianFilter(self.grayscale, -1, filter_size).apply(self.grayscale)
     return self.blur
 
   def DetectEdges(self, minVal=50, maxVal=150):
-    self.edges = cv2.Canny(self.blur, minVal, maxVal)
+    self.edges = cv2.cuda.createCannyEdgeDetector(minVal, maxVal).detect(self.blur)
     return self.edges
 
   def RegionOfInterest(self):
@@ -64,11 +52,14 @@ class ClassicalMethod:
     return self.roi_edges
 
   def HoughLines(self):
-    self.lines = cv2.HoughLinesP(self.roi_edges, rho=2, theta=np.pi/180, threshold=100, minLineLength=40, maxLineGap=150)
+    self.lines = cv2.cuda.HoughLinesP(self.roi_edges, rho=2, theta=np.pi/180, threshold=100, minLineLength=40, maxLineGap=150)
     return self.lines
 
   def LaneBoundaries(self):
     coordinates = []
+
+    if self.lines is None or len(self.lines) == 0:  
+        self.lines = [[0, 0, 0, 0]] # Return default values
 
     for item in self.lines:
         x1, y1, x2, y2 = item[0]
@@ -91,6 +82,17 @@ class ClassicalMethod:
    return self.output
   
   def process(self):
-      for step in self.steps:
-          step()  
-      return self.output 
+      self.Convert2HLS() 
+      self.ApplyMask()
+      self.Convert2Grayscale()
+      self.GaussianBlur()
+      self.DetectEdges()
+      self.RegionOfInterest()
+      self.HoughLines()
+      self.LaneBoundaries()
+      self.FillPolygon()
+      
+      if isinstance(self.output, cv2.cuda_GpuMat):
+        self.output = self.output.download()
+
+      return self.output
