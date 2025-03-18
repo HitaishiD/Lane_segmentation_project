@@ -62,9 +62,18 @@ class ClassicalMethod:
 
   def HoughLines(self):
     self.lines = cv2.HoughLinesP(self.roi_edges, rho=2, theta=np.pi/180, threshold=100, minLineLength=40, maxLineGap=150)
+
+    if self.lines is None:
+       self.lines = []
+
     return self.lines
 
   def LaneBoundaries(self):
+    if not self.lines:
+       self.left_lane = None
+       self.right_lane = None
+       return self.left_lane, self.right_lane
+
     coordinates = []
 
     for item in self.lines:
@@ -77,6 +86,10 @@ class ClassicalMethod:
     return self.left_lane, self.right_lane
 
   def FillPolygon(self):
+   if self.left_lane is None or self.right_lane is None:
+      self.output = self.image
+      return self.output
+
    mask = np.zeros_like(self.image[:,:,0])
    polygon_points = np.array([[self.left_lane[0],self.left_lane[1]], [self.left_lane[2],self.left_lane[3]],[self.right_lane[0],self.right_lane[1]],[self.right_lane[2],self.right_lane[3]]])
    polygon_points = polygon_points.reshape((-1, 1, 2))
