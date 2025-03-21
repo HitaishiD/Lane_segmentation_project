@@ -121,6 +121,8 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
     plt.ioff()
     plt.show()
 
+    return val_losses[-1]
+
 
 
 def parse_args():
