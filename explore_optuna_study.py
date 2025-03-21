@@ -5,6 +5,12 @@ import numpy as np
 study1 = optuna.load_study(study_name="study1", 
                            storage="sqlite:///optuna_study1.db")
 
+# ************* Best parameters ************* 
+print("Best parameters:", study1.best_params)
+
+# ************* Parameters from trial n ************* 
+trial_2 = study1.trials[2]
+print(f"Parameters for Trial 2: {trial_2.params}")
 
 # ************* Optimization history ************* 
 trials = study1.trials
