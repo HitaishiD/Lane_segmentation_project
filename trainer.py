@@ -171,12 +171,7 @@ def main():
 
     # Dataset setup
     image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
-    rgb_mask_dir = '/home/ubuntu/computer-vision/computer-vision/training/semantic_rgb'
-    preprocessed_mask_dir = _mask_folder = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
-
-    # Preprocess masks
-    preprocessor = Processor()
-    preprocessor.convert_rgb_to_mask(rgb_mask_dir, preprocessed_mask_dir, color_map)
+    preprocessed_mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
 
     # Transforms set up
     transform = transforms.Compose([
@@ -229,9 +224,10 @@ def main():
 
     # Configure logging 
     log_dir = experiment_folder
-    log_filename = 'training.log'
+    log_filename = 'training.txt'
+    log_path = os.path.join(log_dir, log_filename)
     logging.basicConfig(
-        filename = log_filename,
+        filename = log_path,
         level = logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
