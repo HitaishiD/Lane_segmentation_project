@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 # Path to your CSV file
-csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs16/training_losses.csv"
+csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs4_lr0.001_epochs2/training_losses.csv"
 # Save the plot as an image
-output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs5_lr0.001_epochs16/loss_plot.png"
+output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs4_lr0.001_epochs2/loss_plot.png"
 
 #csv_file = 'path_to_your_csv_file/training_losses.csv'
 
@@ -16,6 +16,7 @@ loss_df = pd.read_csv(csv_file)
 epochs = loss_df['Epoch']
 train_losses = loss_df['Training Loss']
 val_losses = loss_df['Validation Loss'] if 'Validation Loss' in loss_df.columns else None
+val_iou = loss_df['Validation IoU'] if 'Validation IoU' in loss_df.columns else None
 
 # Plot the training loss
 plt.figure(figsize=(10, 6))
@@ -25,10 +26,14 @@ plt.plot(epochs, train_losses, label="Training Loss", color='b', marker='o')
 if val_losses is not None:
     plt.plot(epochs, val_losses, label="Validation Loss", color='r', marker='x')
 
+# Plot the validation IoU if it exists
+if val_iou is not None:
+    plt.plot(epochs, val_iou, label="Validation IoU", color='g', marker='v')
+
 # Add labels and title
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
-plt.title('Training and Validation Loss Over Epochs')
+plt.title('Loss Over Epochs')
 plt.legend()
 
 
