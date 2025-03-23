@@ -32,9 +32,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
     val_losses = []
     # val_ious = []
 
-    plt.ion()
-    fig, ax = plt.subplots()
-
+    
     logging.info("Starting training...")
 
     epoch_progress = tqdm(range(epochs), desc="Training Progress")  
@@ -95,16 +93,6 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
 
         epoch_progress.set_postfix({"Train Loss": f"{avg_train_loss:.4f}", "Val Loss": f"{avg_val_loss:.4f}"})
 
-        # Update plot
-        ax.clear()
-        ax.plot(train_losses, label="Train Loss")
-        ax.plot(val_losses, label="Val Loss")
-        ax.set_xlabel("Epoch")
-        ax.set_ylabel("Loss")
-        ax.legend()
-        plt.draw()
-        plt.pause(0.1)
-
         # Learning rate scheduling
         scheduler.step()
 
@@ -131,9 +119,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
 
     print("Training Completed!")
     logging.info("Training Completed!")
-    plt.ioff()
-    plt.show()
-
+    
     return val_losses[-1]
 
 
