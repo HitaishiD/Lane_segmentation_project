@@ -227,6 +227,15 @@ def main():
     # Define class_id for IoU evaluation
     class_id = 1
 
+    # Configure logging 
+    log_dir = experiment_folder
+    log_filename = 'training.log'
+    logging.basicConfig(
+        filename = log_filename,
+        level = logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+
     # Train the model
     train(model, 
           train_loader, 
