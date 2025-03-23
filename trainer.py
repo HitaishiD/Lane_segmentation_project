@@ -30,7 +30,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
          class_id, color_map):
     train_losses = []
     val_losses = []
-    # val_ious = []
+    val_ious = []
 
     
     logging.info("Starting training...")
@@ -86,10 +86,10 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         logging.info(f"Val Loss: {avg_val_loss:.4f}")
 
         # Evaluate IoU for validation set
-        # evaluator = Evaluator()
-        # mean_iou = evaluator.compute_mean_iou(model, val_loader, 1, color_map, device)
-        # val_ious.append(mean_iou)
-        # logging.info(f"Val IoU: {mean_iou:.4f}")
+        evaluator = Evaluator()
+        mean_iou = evaluator.compute_mean_iou(model, val_loader, 1, color_map, device)
+        val_ious.append(mean_iou)
+        logging.info(f"Val IoU: {mean_iou:.4f}")
 
         epoch_progress.set_postfix({"Train Loss": f"{avg_train_loss:.4f}", "Val Loss": f"{avg_val_loss:.4f}"})
 
@@ -108,14 +108,14 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
     logging.info(f"Final model checkpoint saved at {final_checkpoint_path}")
 
     # Save the losses to a CSV file
-    # loss_df = pd.DataFrame({
-    #     'Epoch': range(1, epochs + 1),
-    #     'Training Loss': train_losses,
-    #     'Validation Loss': val_losses,
-    
-    # })
+    loss_df = pd.DataFrame({
+        'Epoch': range(1, epochs + 1),
+        'Training Loss': train_losses,
+        'Validation Loss': val_losses,
+        'Validation IoU': val_ious
+    })
 
-    # loss_df.to_csv(os.path.join(experiment_folder, "training_losses.csv"), index=False)
+    loss_df.to_csv(os.path.join(experiment_folder, "training_losses.csv"), index=False)
 
     print("Training Completed!")
     logging.info("Training Completed!")
@@ -223,14 +223,14 @@ def main():
     class_id = 1
 
     # Configure logging 
-    # log_dir = experiment_folder
-    # log_filename = 'training.txt'
-    # log_path = os.path.join(log_dir, log_filename)
-    # logging.basicConfig(
-    #     filename = log_path,
-    #     level = logging.INFO,
-    #     format='%(asctime)s - %(levelname)s - %(message)s'
-    # )
+    log_dir = experiment_folder
+    log_filename = 'training.txt'
+    log_path = os.path.join(log_dir, log_filename)
+    logging.basicConfig(
+        filename = log_path,
+        level = logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
 
     # Train the model
     train(model, 
