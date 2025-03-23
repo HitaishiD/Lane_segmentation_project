@@ -16,6 +16,8 @@ import argparse
 
 
 # Import your custom classes and models
+from processor import Processor
+from color_map import color_map
 from dataset import ToTensorWithoutNormalization
 from dataset import KITTIdataset
 from model import DeepLabV3Plus
@@ -170,11 +172,16 @@ def main():
     NUM_CLASSES = 13
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-
-    # Dataset and Transforms setup
+    # Dataset setup
     image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
-    mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_mask'
+    rgb_mask_dir = '/home/ubuntu/computer-vision/computer-vision/training/semantic_rgb'
+    preprocessed_mask_dir = _mask_folder = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
 
+    # Preprocess masks
+    preprocessor = Processor()
+    preprocessor.convert_rgb_to_mask(rgb_mask_dir, processed_mask_dir, color_map)
+
+    # Transforms set up
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((256, 256)),
@@ -188,7 +195,7 @@ def main():
     ])
 
     # Create dataset and split into train, validation, and test sets
-    dataset = KITTIdataset(image_dir=image_dir, mask_dir=mask_dir,
+    dataset = KITTIdataset(image_dir=image_dir, mask_dir=preprocessed_mask_dir,
                            transform=transform, mask_transform=mask_transform)
 
     num_img = len(dataset)
