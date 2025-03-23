@@ -21,12 +21,16 @@ from color_map import color_map
 from dataset import ToTensorWithoutNormalization
 from dataset import KITTIdataset
 from model import DeepLabV3Plus
+from evaluator import Evaluator
 
 
 
-def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, epochs, NUM_CLASSES, experiment_folder, EXPERIMENT_NAME):
+def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device,
+         epochs, NUM_CLASSES, experiment_folder, EXPERIMENT_NAME,
+         class_id, color_map):
     train_losses = []
     val_losses = []
+    # val_ious = []
 
     plt.ion()
     fig, ax = plt.subplots()
@@ -83,6 +87,12 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
         print(f"Val Loss: {avg_val_loss:.4f}")
         logging.info(f"Val Loss: {avg_val_loss:.4f}")
 
+        # Evaluate IoU for validation set
+        # evaluator = Evaluator()
+        # mean_iou = evaluator.compute_mean_iou(model, val_loader, 1, color_map, device)
+        # val_ious.append(mean_iou)
+        # logging.info(f"Val IoU: {mean_iou:.4f}")
+
         epoch_progress.set_postfix({"Train Loss": f"{avg_train_loss:.4f}", "Val Loss": f"{avg_val_loss:.4f}"})
 
         # Update plot
@@ -113,7 +123,8 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
     loss_df = pd.DataFrame({
         'Epoch': range(1, epochs + 1),
         'Training Loss': train_losses,
-        'Validation Loss': val_losses
+        'Validation Loss': val_losses,
+    
     })
 
     loss_df.to_csv(os.path.join(experiment_folder, "training_losses.csv"), index=False)
@@ -179,7 +190,7 @@ def main():
 
     # Preprocess masks
     preprocessor = Processor()
-    preprocessor.convert_rgb_to_mask(rgb_mask_dir, processed_mask_dir, color_map)
+    preprocessor.convert_rgb_to_mask(rgb_mask_dir, preprocessed_mask_dir, color_map)
 
     # Transforms set up
     transform = transforms.Compose([
@@ -227,6 +238,9 @@ def main():
     if not os.path.exists(experiment_folder):
         os.makedirs(experiment_folder)
 
+    # Define class_id for IoU evaluation
+    class_id = 1
+
     # Train the model
     train(model, 
           train_loader, 
@@ -238,7 +252,9 @@ def main():
           epochs,
           NUM_CLASSES,
           experiment_folder,   # Pass the experiment folder here
-          EXPERIMENT_NAME)
+          EXPERIMENT_NAME,
+          class_id,
+          color_map)
 
 
 
