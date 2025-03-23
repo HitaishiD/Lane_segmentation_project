@@ -21,15 +21,16 @@ from dataset import ToTensorWithoutNormalization
 from dataset import KITTIdataset
 from model import DeepLabV3Plus
 from trainer import train
+from color_map import color_map
 
 def objective(trial):
     """
     Objective function for Optuna.
     """
     # Define hyperparameter search space
-    batch_size = trial.suggest_categorical("batch_size", [16, 32, 64])
+    batch_size = trial.suggest_categorical("batch_size", [8, 16, 32, 64])
     learning_rate = trial.suggest_loguniform("learning_rate", 1e-5, 1e-1)
-    epochs = trial.suggest_int("epochs", 5, 10)
+    epochs = trial.suggest_int("epochs", 10, 50)
     
     CHECKPOINT_DIR = "experiments"
     EXPERIMENT_NAME = f"bs{batch_size}_lr{learning_rate}_epochs{epochs}"
@@ -38,7 +39,7 @@ def objective(trial):
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
     image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
-    mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_mask'
+    mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
 
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -83,6 +84,7 @@ def objective(trial):
     if not os.path.exists(experiment_folder):
         os.makedirs(experiment_folder)
 
+    class_id = 1
     
     val_loss =  train(model, 
           train_loader, 
@@ -94,14 +96,16 @@ def objective(trial):
           epochs,
           NUM_CLASSES,
           experiment_folder,  
-          EXPERIMENT_NAME)
+          EXPERIMENT_NAME,
+          class_id,
+          color_map)
 
     return val_loss
 
 # Run the optimization
-study = optuna.create_study(direction="minimize", study_name="study1",
-                            storage="sqlite:///optuna_study1.db")
-study.optimize(objective, n_trials=3)  
+study = optuna.create_study(direction="minimize", study_name="study2",
+                            storage="sqlite:///optuna_study2.db")
+study.optimize(objective, n_trials=20)  
 
 # Print best parameters
 print("Best parameters:", study.best_params)
