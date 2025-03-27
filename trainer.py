@@ -13,6 +13,7 @@ import logging
 import time
 import pandas as pd
 import argparse
+import random
 
 
 # Import your custom classes and models
@@ -186,6 +187,12 @@ def main():
         ToTensorWithoutNormalization()
     ])
 
+    # Set seed for reproducibility
+    SEED = 27
+    torch.manual_seed(SEED)
+    random.seed(SEED)
+    np.random.seed(SEED)
+
     # Create dataset and split into train, validation, and test sets
     dataset = KITTIdataset(image_dir=image_dir, mask_dir=preprocessed_mask_dir,
                            transform=transform, mask_transform=mask_transform)
@@ -197,11 +204,12 @@ def main():
     val_size = int(0.2 * num_img)
     test_size = num_img - train_size - val_size
 
-    train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
+    generator = torch.Generator().manual_seed(SEED)
+    train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size], generator=generator)
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
     # Model setup
     model = DeepLabV3Plus(NUM_CLASSES)
