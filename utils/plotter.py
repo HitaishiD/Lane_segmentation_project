@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 # Path to your CSV file
-csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs4_lr0.001_epochs2/training_losses.csv"
+csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs8_lr0.000146_epochs31/training_losses.csv"
 # Save the plot as an image
-output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs4_lr0.001_epochs2/loss_plot.png"
+output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs8_lr0.000146_epochs31/loss_plot.png"
 
 #csv_file = 'path_to_your_csv_file/training_losses.csv'
 
