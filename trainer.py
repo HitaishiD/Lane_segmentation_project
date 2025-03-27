@@ -207,9 +207,6 @@ def main():
     generator = torch.Generator().manual_seed(SEED)
     train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size], generator=generator)
 
-    # Save test_dataset to a file for use in model evaluation
-    torch.save(test_dataset, 'test_dataset.pth')
-
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
@@ -261,10 +258,10 @@ def main():
     # ----------------------------------------------------------------- #
     # This evaluation is performed only after obtaining
     # the best model after hyperparameter finetuning.
-    model.eval()
-    evaluator = Evaluator()
-    mean_iou = evaluator.compute_mean_iou(model, test_loader,1,color_map, DEVICE)
-    logging.info(f"Mean IoU for test set for best model: {mean_iou}")
+    # model.eval()
+    # evaluator = Evaluator()
+    # mean_iou = evaluator.compute_mean_iou(model, test_loader,1,color_map, DEVICE)
+    # logging.info(f"Mean IoU for test set for best model: {mean_iou}")
     # ----------------------------------------------------------------- # 
 
 if __name__ == "__main__":
