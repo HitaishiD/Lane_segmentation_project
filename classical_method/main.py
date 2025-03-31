@@ -7,6 +7,7 @@ import numpy as np
 from tqdm import tqdm
 import os
 import time
+import pandas as pd
 
 def predict_evaluate_one_image(image_path, true_mask_path, class_id, color_map):
     """
@@ -70,6 +71,13 @@ def predict_evaluate_dataset(images_dir, true_masks_dir, class_id, color_map):
     # Compute mean IoU and mean processing time
     mean_iou = sum(ious)/len(ious)
     mean_time = sum(times)/len(times)
+
+    iou_df = pd.DataFrame({
+        'Image Number' : range(1,len(images)+1),
+        'IoU' : ious
+    })
+
+    iou_df.to_csv("iou.csv", index=False)
     return mean_iou, mean_time
 
 if __name__ == "__main__":
@@ -79,6 +87,7 @@ if __name__ == "__main__":
     """
     images_dir = r"E:\data_semantics\training\image_2"
     true_masks_dir = r"E:\data_semantics\training\semantic_rgb"
+
     class_id = 1
     color_map = color_map
     mean_iou, mean_time = predict_evaluate_dataset(images_dir, true_masks_dir, class_id, color_map)
