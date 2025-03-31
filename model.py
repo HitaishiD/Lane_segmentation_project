@@ -1,6 +1,8 @@
+# Import required libraries
 from torchvision.models import segmentation
 import torch.nn as nn
 
+# Define model class
 class DeepLabV3Plus(nn.Module):
     def __init__(self, num_classes):
         super(DeepLabV3Plus, self).__init__()

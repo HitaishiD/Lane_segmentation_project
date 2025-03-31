@@ -1,3 +1,4 @@
+# Import required libraries
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -14,7 +15,7 @@ import logging
 import time
 import pandas as pd
 
-
+# Define processor class for masks
 class Processor:
     def convert_rgb_to_mask(self, mask_folder, output_mask_folder, color_map):
         ''' convert a folder of rgb masks to single channel mask with class indices'''

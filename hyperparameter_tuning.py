@@ -1,3 +1,4 @@
+# Import required libraries
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -15,14 +16,14 @@ import pandas as pd
 import argparse
 import optuna
 
-
-# Import your custom classes and models
+# Import custom classes
 from dataset import ToTensorWithoutNormalization
 from dataset import KITTIdataset
 from model import DeepLabV3Plus
 from trainer import train
 from color_map import color_map
 
+# Define the objective function that the Optuna algorithm will optimize
 def objective(trial):
     """
     Objective function for Optuna.
@@ -32,6 +33,7 @@ def objective(trial):
     learning_rate = trial.suggest_loguniform("learning_rate", 1e-5, 1e-1)
     epochs = trial.suggest_int("epochs", 10, 50)
     
+    # Define other input variables
     CHECKPOINT_DIR = "experiments"
     EXPERIMENT_NAME = f"bs{batch_size}_lr{learning_rate}_epochs{epochs}"
 
@@ -41,6 +43,7 @@ def objective(trial):
     image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
     mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
 
+    # Define transforms for images and masks
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize((256, 256)),
@@ -58,7 +61,6 @@ def objective(trial):
                            transform=transform, mask_transform=mask_transform)
 
     num_img = len(dataset)
-   
 
     train_size = int(0.6 * num_img)
     val_size = int(0.2 * num_img)
@@ -84,8 +86,10 @@ def objective(trial):
     if not os.path.exists(experiment_folder):
         os.makedirs(experiment_folder)
 
+    # Define the ID of the class for which the model is evaluated
     class_id = 1
     
+    # Train the model and return the final validation loss that will be optimized
     val_loss =  train(model, 
           train_loader, 
           val_loader,
@@ -102,9 +106,11 @@ def objective(trial):
 
     return val_loss
 
-# Run the optimization
+# Create the optimization study
 study = optuna.create_study(direction="minimize", study_name="study2",
                             storage="sqlite:///optuna_study2.db")
+
+# Run the study after defining the number of experiments
 study.optimize(objective, n_trials=20)  
 
 # Print best parameters

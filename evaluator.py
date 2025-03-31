@@ -1,3 +1,4 @@
+# Import required libraries
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,11 +14,10 @@ import logging
 import time
 import pandas as pd
 
-# our classes
+# Import custom classes
 from processor import Processor
 
-
-
+# Define the class which performs evaluation of the model by computing IoU
 class Evaluator:
     def compute_iou(self, pred_mask_array, true_mask_array, class_id, color_map):
         

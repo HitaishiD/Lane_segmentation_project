@@ -1,7 +1,9 @@
+# Import required libraries
 import optuna 
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Load Optuna study from the database saved during Optuna hyperparameter search
 study1 = optuna.load_study(study_name="study2", 
                            storage="sqlite:///optuna_study2.db")
 
@@ -14,6 +16,8 @@ print("Best parameters:", study1.best_params)
 
 # ************* Optimization history ************* 
 trials = study1.trials
+
+# Get values (final validation IoU) and steps (experiment number)
 values = [trial.value for trial in trials]
 steps = [trial.number for trial in trials]
 

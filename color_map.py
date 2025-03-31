@@ -1,3 +1,6 @@
+# Define a dictionary mapping RGB colors to class labels
+# The key is the (R, G, B) tuple, and the value is the corresponding class label
+
 color_map = {
     (128, 64, 128): 1,    # Road
     (244,35,232): 2,      # Sidewalk

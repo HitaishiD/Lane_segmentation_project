@@ -1,3 +1,4 @@
+# Import required libraries
 from torchvision import transforms
 from PIL import Image
 import os
@@ -7,7 +8,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 from tqdm import tqdm
 import torch
 
-
+# Define KITTI dataset class
 class KITTIdataset(Dataset):
     def __init__(self,image_dir, mask_dir, transform=None, mask_transform=None, image_size=(256, 256)):
         self.image_dir = image_dir
@@ -19,6 +20,7 @@ class KITTIdataset(Dataset):
         self.image_names = sorted([f for f in os.listdir(image_dir) if f.endswith(('.png', '.jpg', '.jpeg'))])
         self.mask_names = sorted([f for f in os.listdir(mask_dir) if f.endswith(('.png', '.jpg', '.jpeg'))])
 
+        # Check if there is an equal number of images and masks
         assert len(self.image_names) == len(self.mask_names), "Mismatch between image and mask count!"
 
     def __len__(self):
@@ -42,7 +44,7 @@ class KITTIdataset(Dataset):
 
         return image, mask
 
-
+# Define class that converts the mask into a tensor without normalization to keep the colors unchanged
 class ToTensorWithoutNormalization:
     def __call__(self, sample):
         mask = np.array(sample)

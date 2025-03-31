@@ -1,3 +1,4 @@
+# Import required libraries
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,15 +14,14 @@ import logging
 import time
 import pandas as pd
 
-# Import your custom classes and models
+# Import custom classes
 from dataset import ToTensorWithoutNormalization
 from dataset import KITTIdataset
 from model import DeepLabV3Plus
 from processor import Processor
 
 
-
-
+# Define inference class 
 class Inference:
     def __init__(self, model, color_map, device):
         self.model = model.to(device)
