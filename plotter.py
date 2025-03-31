@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 # Path to CSV file containing training losses
-csv_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs8_lr0.000146_epochs31/training_losses.csv"
+csv_file = "experiments/bs8_lr0.000146_epochs31/training_losses.csv"
 # Path at which to save the plot as an image
-output_file = "/home/ubuntu/computer-vision/computer-vision/experiments/bs8_lr0.000146_epochs31/loss_plot.png"
+output_file = "experiments/bs8_lr0.000146_epochs31/loss_plot.png"
 
 
 # Read the CSV file into a pandas DataFrame
@@ -35,7 +35,10 @@ plt.ylabel('Loss')
 plt.title('Loss Over Epochs')
 plt.legend()
 
-# Save the image
+# Show figure
+plt.show()
+
+# Save figure 
 plt.savefig(output_file)
 
 
