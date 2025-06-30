@@ -1,6 +1,6 @@
 # Import custom classes
-from processor import Processor
-from color_map import color_map
+from framework.processor import Processor
+from framework.color_map import color_map
 
 # Define folders containing input masks and output masks
 mask_folder = '/home/ubuntu/computer-vision/computer-vision/training/semantic_rgb'

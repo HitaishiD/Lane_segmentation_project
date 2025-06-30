@@ -1,15 +1,13 @@
+# Import required libraries
 import sys
 import os
-
-# Add the directory containing model.py to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from dataset import ToTensorWithoutNormalization
-from dataset import KITTIdataset
 from torchvision import transforms
 
-# Test Dataset class and Transforms class
+# Import custom classes
+from framework.dataset import ToTensorWithoutNormalization
+from framework.dataset import KITTIdataset
 
+# Test Dataset class and Transforms class
 image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
 mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_mask'
 

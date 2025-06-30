@@ -17,11 +17,11 @@ import argparse
 import optuna
 
 # Import custom classes
-from dataset import ToTensorWithoutNormalization
-from dataset import KITTIdataset
-from model import DeepLabV3Plus
-from trainer import train
-from color_map import color_map
+from framework.dataset import ToTensorWithoutNormalization
+from framework.dataset import KITTIdataset
+from framework.model import DeepLabV3Plus
+from framework.trainer import train
+from framework.color_map import color_map
 
 # Define the objective function that the Optuna algorithm will optimize
 def objective(trial):

@@ -1,16 +1,12 @@
+# Import required libraries
 import sys
 import os
 
-# Add the directory containing model.py to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Import custom classes
+from framework.processor import Processor
+from framework.color_map import color_map
 
-
-from processor import Processor
-from color_map import color_map
-
-
-# Test Preprocessor class
-
+# Test Processor class
 mask_folder = '/home/ubuntu/computer-vision/computer-vision/training/semantic_rgb'
 output_mask_folder = '/home/ubuntu/computer-vision/computer-vision/testing_preprocessed_masks'
 

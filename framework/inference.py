@@ -15,10 +15,10 @@ import time
 import pandas as pd
 
 # Import custom classes
-from dataset import ToTensorWithoutNormalization
-from dataset import KITTIdataset
-from model import DeepLabV3Plus
-from processor import Processor
+from framework.dataset import ToTensorWithoutNormalization
+from framework.dataset import KITTIdataset
+from framework.model import DeepLabV3Plus
+from framework.processor import Processor
 
 
 # Define inference class 

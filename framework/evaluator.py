@@ -15,7 +15,7 @@ import time
 import pandas as pd
 
 # Import custom classes
-from processor import Processor
+from framework.processor import Processor
 
 # Define the class which performs evaluation of the model by computing IoU
 class Evaluator:

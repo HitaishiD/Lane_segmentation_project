@@ -17,12 +17,12 @@ import random
 
 
 # Import your custom classes and models
-from processor import Processor
-from color_map import color_map
-from dataset import ToTensorWithoutNormalization
-from dataset import KITTIdataset
-from model import DeepLabV3Plus
-from evaluator import Evaluator
+from framework.processor import Processor
+from framework.color_map import color_map
+from framework.dataset import ToTensorWithoutNormalization
+from framework.dataset import KITTIdataset
+from framework.model import DeepLabV3Plus
+from framework.evaluator import Evaluator
 
 
 
