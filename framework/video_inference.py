@@ -11,8 +11,8 @@ from framework.model import DeepLabV3Plus
 
 # Inputs 
 MODEL_PATH = "./experiments/bs8_lr0.000146_epochs31/final_model.pth"
-input_video_path = 'test-videos/1-urban.mp4'
-output_video_path = 'test-videos/1-urban-out.mp4'
+input_video_path = 'test-videos/6-night-rain.mp4'
+output_video_path = 'test-videos/5-night-rain-out.mp4'
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 NUM_CLASSES = 13
@@ -55,6 +55,7 @@ while cap.isOpened():
 
     # Preprocess
     input_tensor = preprocess(pil_img).unsqueeze(0)  # shape: (1, 3, 256, 256)
+    input_tensor = input_tensor.to(DEVICE)
 
     with torch.no_grad():
         output = model(input_tensor)  # shape: (1, num_classes, 256, 256)
@@ -88,5 +89,6 @@ total_time = end_time - start_time
 inference_fps = frame_count / total_time
 
 print(f"Processed {frame_count} frames in {total_time:.2f} seconds")
+print(f"Original video FPS: {fps:.2f}")
 print(f"Inference FPS: {inference_fps:.2f}")
 
