@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download the model weights
-wget -P .experiments/bs8_lr0.000146_epochs31 https://storage.googleapis.com/lane-segmentation/final_model.pth
+wget https://storage.googleapis.com/lane-segmentation/final_model.pth
 
 # Check if the download was successful
 if [ $? -eq 0 ]; then
