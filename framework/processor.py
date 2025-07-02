@@ -39,7 +39,7 @@ class Processor:
             cv2.imwrite(output_mask_path, integer_mask)     
 
 
-    def convert_mask_to_rgb(mask, color_map):
+    def convert_mask_to_rgb(self, mask, color_map):
         ''' convert an 2D mask with class indices to an rgb mask '''
         if isinstance(mask, torch.Tensor):
             mask = mask.cpu().numpy()  
