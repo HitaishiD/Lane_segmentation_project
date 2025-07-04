@@ -171,8 +171,8 @@ def main():
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Dataset setup
-    image_dir = '/home/ubuntu/computer-vision/computer-vision/training/image_2'
-    preprocessed_mask_dir = '/home/ubuntu/computer-vision/computer-vision/preprocessed_masks'
+    image_dir = '/root/Lane_segmentation_project/dataset/training/image_2'
+    preprocessed_mask_dir = '/root/Lane_segmentation_project/dataset/training/preprocessed_masks'
 
     # Transforms set up
     transform = transforms.Compose([
