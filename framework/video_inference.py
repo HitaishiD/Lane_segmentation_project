@@ -10,9 +10,9 @@ from framework.color_map import color_map
 from framework.model import DeepLabV3Plus
 
 # Inputs 
-MODEL_PATH = "./experiments/bs8_lr0.000146_epochs31/final_model.pth"
-input_video_path = 'test-videos/6-night-rain.mp4'
-output_video_path = 'test-videos/5-night-rain-out.mp4'
+MODEL_PATH = "./experiments/bs8_lr0.000146_epochs50/final_model.pth"
+input_video_path = 'test-videos/my_recorded_video.mp4'
+output_video_path = 'test-videos/my_recorded_video-out.mp4'
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 NUM_CLASSES = 13
