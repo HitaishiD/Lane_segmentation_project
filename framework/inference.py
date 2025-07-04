@@ -45,7 +45,8 @@ class Inference:
             output = self.model(input_tensor)
             predicted_mask = torch.argmax(output, dim=1).squeeze(0).cpu().numpy()
 
-        predicted_rgb_mask = Processor.convert_mask_to_rgb(predicted_mask, self.color_map)
+        processor = Processor()
+        predicted_rgb_mask = processor.convert_mask_to_rgb(predicted_mask, self.color_map)
 
         return predicted_rgb_mask
     
@@ -60,6 +61,7 @@ class Inference:
             output = self.model(image)
             predicted_mask = torch.argmax(output, dim=1).squeeze(0).cpu().numpy()
 
-        predicted_rgb_mask = Processor.convert_mask_to_rgb(predicted_mask, self.color_map)
+        processor = Processor()
+        predicted_rgb_mask = processor.convert_mask_to_rgb(predicted_mask, self.color_map)
 
         return predicted_rgb_mask
