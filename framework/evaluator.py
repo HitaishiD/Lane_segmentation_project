@@ -84,8 +84,9 @@ class Evaluator:
 
                 for i in range(images.shape[0]):  
                     # Convert predicted & true masks to RGB
-                    true_mask_rgb = Processor.convert_mask_to_rgb(true_masks[i].squeeze(0), color_map)
-                    pred_mask_rgb = Processor.convert_mask_to_rgb(predicted_masks[i], color_map)
+                    processor = Processor()
+                    true_mask_rgb = processor.convert_mask_to_rgb(true_masks[i].squeeze(0), color_map)
+                    pred_mask_rgb = processor.convert_mask_to_rgb(predicted_masks[i], color_map)
         
                     iou = self.compute_iou(pred_mask_rgb, true_mask_rgb, class_id, color_map)
                     all_iou.append(iou)
